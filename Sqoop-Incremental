@@ -1,0 +1,52 @@
+Sqoop incremental import
+Login to mysql databases
+mysql> mysql  -uroot  -pcloudera
+mysql -u root –pcloudera
+ 
+Show all database in mysql
+mysql> show databases;
+show databases;
+ 
+Used retail_db databases.
+mysql> use retail_db
+use retail_db
+ 
+Show all tables in retail_db database.
+mysql> show tables;
+show tables;
+ 
+Display all fields in departments table.
+mysql> select * from departments;
+select * from departments;
+ 
+Insert two rows in departments table
+INSERT INTO departments (department_id, department_name) VALUES (21, 'NewVal');
+ 
+
+INSERT INTO departments (department_id, department_name) VALUES (22, 'NewVal');
+ 
+Display all fields in departments table.
+select * from departments;
+
+ 
+Exit mysql database
+quit
+ 
+
+To show data in HDFS.
+ Hadoop fs –cat /user/cloudera/departments/part*
+ 
+To show data in dapartments table through sqoop eval command.
+
+sqoop eval --connect jdbc:mysql://localhost:3306/retail_db --username retail_dba --password cloudera --query "select * from departments"
+ 
+Import new data from mysql to HDFS using sqoop import command
+sqoop import --connect jdbc:mysql://localhost:3306/retail_db --username retail_dba --password cloudera --table departments --check-column department_id --incremental append --last-value 7
+
+ 
+To show all imported data in hdfs
+hadoop fs -cat /user/cloudera/departments/part*
+ 
+
+
+
