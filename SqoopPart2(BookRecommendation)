@@ -1,0 +1,29 @@
+Now we need to create a shell script:
+Open the newterminal and go to big-data-internship-program directorty and created one file daily_job.sh.
+cd big-data-internship-program/
+ 
+gedit daily_job.sh
+ 
+
+Put the below code on daily_job.sh file
+
+#!/bin/sh
+echo "Running users incremental job"
+sqoop job --exec inc_users
+echo "Running books incremental job"
+sqoop job --exec inc_books
+
+ 
+Test the script: It will run incremental job for Users and books table.
+sh daily_job.sh 
+
+Now we will create entry for cronjob so that data will updated on daily basis at 10pm
+Type below command then open the vi editor put below code in vi editor
+crontab –e
+0 22 * * *  sh  /home/cloudera/big-data-internship-program/daily_job.sh
+ 
+
+
+
+
+
