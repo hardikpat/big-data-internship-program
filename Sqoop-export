@@ -1,0 +1,47 @@
+This document explains how to export data from HDFS to mysql using sqoop export command.ysql
+Open the terminal and login to mysql database and write below command
+mysql  -uroot  -pcloudera 
+ 
+Show database in mysql database
+show database;
+ 
+Use retail_db database in mysql database.
+use retail_db 
+ 
+Show all tables in retail_db databases
+show tables;
+
+ 
+Create departments_data table under retail_db databes
+create table departments_data like departments; 
+ 
+Show all tables in retail_db
+show tables; 
+ 
+
+Show all data from departments_data
+select * from departments_data; 
+ 
+Exit mysql database
+quit;
+
+ 
+Export data from HDFS to mysql
+sqoop export --connect jdbc:mysql://localhost:3306/retail_db --table departments_data --username retail_dba --password cloudera --export-dir departments
+ 
+Login into mysql
+mysql  -u root –pcloudera
+ 
+Used retail_ database
+use retail_db;
+
+Show all tables
+show tables;
+
+Show exported data in departments_data table.
+select * from departments_data;
+ 
+
+
+
+
