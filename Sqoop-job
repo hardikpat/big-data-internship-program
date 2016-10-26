@@ -1,0 +1,26 @@
+This Document show how to create sqoop job using sqoop command.
+
+Create sqoop job using below command:
+sqoop job --create mynewjob -- import --connect jdbc:mysql://localhost:3306/retail_db --username root --password cloudera --table orders
+
+ 
+
+--list argument is used to verify the saved jobs. The following command is used to verify the list of saved Sqoop jobs
+sqoop job --list
+
+ 
+--show argument is used to inspect or verify particular jobs and their details. 
+sqoop job --show mynewjob
+ 
+
+ 
+--exec option is used to execute a saved job. The following command is used to execute a saved job called myjob.
+sqoop job --exec mynewjob
+
+ 
+ 
+ 
+
+
+
+
