@@ -1,0 +1,83 @@
+Download following files from Git link from cloudera home folder.
+a.	Project.sql
+b.	ratings.dat
+
+git clone https://udemyuser@bitbucket.org/udemyteam/big-data-internship-program.git
+
+Note: you have already got Password via mail. Please put that password.  If you haven’t got the password in mail or deleted password. Please massage us, we will provide you.
+
+We are saving data into MYSQL
+
+	mysql -u root –p
+           
+           
+ 
+Password of mysql: cloudera
+Step 1: create a database in mysql .
+      Mysql> create database recommendations;
+ 
+Step 2: use recommendations;
+ 
+
+Step 3: To execute sql file for creating table and then inserting data into that table.By using source command
+
+	Mysql>source /home/cloudera/big-data-internship-program/project.sql
+	// source command is used to execute sql files on mysql.
+ 
+Step 4: show tables;
+ 
+
+Step 5: create the password file and save in hdfs:
+printf "cloudera" > password 
+hadoop fs -put password /user/cloudera/
+ 
+Step 6:
+We have data on mysql and We need to transfer data from mysql to hdfs.
+sqoop is a tool to provide feasible interaction between relational databases and hdfs(hadoop).
+Create job for full data import from Users table:
+
+sqoop job --create fullrefresh_users -- import --connect jdbc:mysql://localhost:3306/recommendations --username root --password-file  /user/cloudera/password --table Users  --fields-terminated-by '|'  --target-dir /user/cloudera/Users -m 1
+ 
+Execute created job fullrefresh_users
+sqoop job --exec fullrefresh_users
+ 
+ 
+Step 7:
+Now we need to create incremental job so that we will get all updated data from mysql if there is any update in mysql table.
+Create incremental job for Users:
+sqoop job --create inc_users -- import --connect jdbc:mysql://localhost:3306/recommendations --username root --password-file  /user/cloudera/password --table Users --fields-terminated-by '|' --target-dir /user/cloudera/Users -m 1 --incremental lastmodified -check-column updated_at --merge-key User_ID
+ 
+Test the job: 
+sqoop job --exec inc_users
+ 
+ Step 8:
+Create job for full data import from books table:
+sqoop job --create fullrefresh_books -- import --connect jdbc:mysql://localhost:3306/recommendations --username root --password-file  /user/cloudera/password --table books  --fields-terminated-by '|'  --target-dir /user/cloudera/books -m 1
+ 
+
+Execute created job fullrefresh_books:
+sqoop job --exec fullrefresh_books
+ 
+We need incremental job for book also as we did for Users table.
+
+Create incremental job for books:
+
+sqoop job --create inc_books -- import --connect jdbc:mysql://localhost:3306/recommendations --username root --password-file  /user/cloudera/password --table books --fields-terminated-by '|' --target-dir /user/cloudera/books -m 1 --incremental lastmodified -check-column updated_at --merge-key bookid
+
+ 
+Test incremental job “inc_books”
+sqoop job --exec inc_books
+ 
+While running sqoop job, it will create a java classes and jar files. We can see that java file like thi
+Location: local filesystem.
+Sqoop by default launch 4 mapper based on the boundary query tool.But we can specify user defined number of mappers by using -m 1 ------> single mapper
+
+Step9:
+HDFS:
+Mysql data stored in hdfs directory /user/cloudera/Users from users data and /user/cloudera/books for books data.
+
+ 
+ 
+
+
+
