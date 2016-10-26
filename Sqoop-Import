@@ -1,0 +1,39 @@
+This Document show how to import data from mysql to HDFS using sqoop command.
+Open the Terminal and type below command
+mysql> mysql -u root –pcloudera
+mysql -u root –pcloudera
+ 
+Show all database in mysql
+mysql> show databases;
+show databases;
+ 
+Used retail_db databases.
+mysql> use retail_db
+use retail_db
+ 
+Show all tables in retail_db database.
+mysql> show tables;
+show tables;
+ 
+Display all fields in departments  table.
+mysql> select * from departments;
+select * from departments;
+ 
+To exit mysql database
+mysql> quit
+quit
+
+Import data from mysql to HDFS using sqoop import commands
+Display all mysql database using sqoop list command
+sqoop list-databases --connect jdbc:mysql://quickstart.cloudera --username root --password cloudera
+ 
+
+Import data from mysql to HDFS using sqoop import command
+sqoop import --connect jdbc:mysql://localhost:3306/retail_db --table departments --username retail_dba --password cloudera
+
+To display imported data in Hue file browser.
+ 
+To show data in HDFS.
+hadoop fs -cat /user/cloudera/departments/part*
+ 
+
